@@ -49,7 +49,20 @@ services:
       - PORT=3002
       - DATABASE_URL=postgresql://postgres:123456@orders-db:5432/ordersdb?schema=public
       - NATS_SERVERS=nats://nats-server:4222
-
+  payments-ms:
+    build: ./payments-ms
+    volumes:
+      - ./payments-ms/src:/usr/src/app/src
+    ports:
+     - 3003:3003
+    command: npm run start:dev
+    environment:
+      - PORT=3003
+      - STRIPE_SECRET=sk_test_51R3iIuEd6mWG0zbHS0ZKoGnaR34NJ9ldsTnIjQ2ZrbAgX4QrXHQtPgDYz2zpUT7LzHVjS8opGx9hz4jpcxpEBfgj00fe1xLCb0
+      - STRIPE_SUCCESS_URL=http://localhost:3003/payments/success
+      - STRIPE_CANCEL_URL=http://localhost:3003/payments/success
+      - STRIPE_ENPOINTSECRET=whsec_elQamddf1uLrF8GAqStpI76k3dI9dfVe
+      - NATS_SERVERS=nats://nats-server:4222
 
 
   
